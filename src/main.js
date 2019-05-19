@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import App from './App.vue'
+import wrap from '@vue/web-component-wrapper'
+import VueWebComponent from '@/components/VueWebComponent'
+import packageJson from '../package.json'
 
-Vue.config.productionTip = false
+const CustomElement = wrap(Vue, VueWebComponent)
 
-new Vue({
-  render: h => h(App)
-}).$mount('#app')
+window.customElements.define(packageJson.name, CustomElement)
