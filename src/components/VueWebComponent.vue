@@ -1,8 +1,12 @@
+<template>
+  <div v-html="dynamicHtml"></div>
+</template>
+
 <script>
 export default {
   data () {
     return {
-      template: null
+      loadedHtml: null
     }
   },
   props: {
@@ -11,13 +15,16 @@ export default {
       required: false
     }
   },
-  render (h) {
-    // if (!this.template) {
-    //   return h('div', '')
-    // } else {
-    //   return h(this.load('www.google.de'))
-    // }
-    return h(this.load('http://www.google.de'))
+  computed: {
+    dynamicHtml () {
+      if (typeof this.loadedHtml === 'string') {
+        return this.loadedHtml
+      }
+      return ''
+    }
+  },
+  mounted () {
+    this.loadedHtml = this.load('/example-html-page-snippet.html')
   },
   methods: {
     load (url) {
@@ -26,6 +33,8 @@ export default {
         method: 'get'
       }).then(response => {
         return response.text()
+      }).then(html => {
+        return html
       })
     }
   }
